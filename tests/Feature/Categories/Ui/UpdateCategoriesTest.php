@@ -20,12 +20,19 @@ class UpdateCategoriesTest extends TestCase
             ->assertForbidden();
     }
 
+    public function testPageRenders()
+    {
+        $this->actingAs(User::factory()->superuser()->create())
+            ->get(route('categories.edit', Category::factory()->create()->id))
+            ->assertOk();
+    }
+
     public function testUserCanCreateCategories()
     {
         $this->actingAs(User::factory()->superuser()->create())
             ->post(route('categories.store'), [
                 'name' => 'Test Category',
-                'category_type' => 'asset'
+                'category_type' => 'asset',
             ])
             ->assertStatus(302)
             ->assertSessionHasNoErrors()
@@ -42,13 +49,14 @@ class UpdateCategoriesTest extends TestCase
         $response = $this->actingAs(User::factory()->superuser()->create())
             ->put(route('categories.update', ['category' => $category]), [
                 'name' => 'Test Category Edited',
+                'notes' => 'Test Note Edited',
             ])
             ->assertStatus(302)
             ->assertSessionHasNoErrors()
             ->assertRedirect(route('categories.index'));
 
         $this->followRedirects($response)->assertSee('Success');
-        $this->assertTrue(Category::where('name', 'Test Category Edited')->exists());
+        $this->assertTrue(Category::where('name', 'Test Category Edited')->where('notes', 'Test Note Edited')->exists());
 
     }
 
@@ -62,13 +70,14 @@ class UpdateCategoriesTest extends TestCase
             ->put(route('categories.update', ['category' => $category]), [
                 'name' => 'Test Category Edited',
                 'category_type' => 'accessory',
+                'notes' => 'Test Note Edited',
             ])
             ->assertSessionHasNoErrors()
             ->assertStatus(302)
             ->assertRedirect(route('categories.index'));
 
         $this->followRedirects($response)->assertSee('Success');
-        $this->assertTrue(Category::where('name', 'Test Category Edited')->exists());
+        $this->assertTrue(Category::where('name', 'Test Category Edited')->where('notes', 'Test Note Edited')->exists());
 
     }
 
@@ -82,6 +91,7 @@ class UpdateCategoriesTest extends TestCase
             ->put(route('categories.update', ['category' => $category]), [
                 'name' => 'Test Category Edited',
                 'category_type' => 'accessory',
+                'notes' => 'Test Note Edited',
             ])
             ->assertSessionHasErrors(['category_type'])
             ->assertInvalid(['category_type'])
@@ -89,7 +99,7 @@ class UpdateCategoriesTest extends TestCase
             ->assertRedirect(route('categories.edit', ['category' => $category->id]));
 
         $this->followRedirects($response)->assertSee(trans('general.error'));
-        $this->assertFalse(Category::where('name', 'Test Category Edited')->exists());
+        $this->assertFalse(Category::where('name', 'Test Category Edited')->where('notes', 'Test Note Edited')->exists());
 
     }
 

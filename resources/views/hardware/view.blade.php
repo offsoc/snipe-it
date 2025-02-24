@@ -215,6 +215,19 @@
                                     @endif
                                 @endif
 
+                                        <!-- Add notes -->
+                                        @can('update', \App\Models\Asset::class)
+                                            <!--
+
+                                            <div class="col-md-12 hidden-print" style="padding-top: 5px;">
+                                                <a href='{{ route('modal.show', 'add-note') }}?type=asset&id={{$asset->id}}' style="width: 100%" data-toggle="modal" data-target="#createModal" data-select='add-note_select_id' data-refresh="assetHistory" data-hasnopayload="true" class="btn btn-sm btn-primary btn-block btn-social hidden-print">
+                                                    <x-icon type="note" />
+                                                    {{ trans('general.add_note') }}</a>
+                                            </div>
+                                            -->
+                                        @endcan
+
+
 
 
                                     @can('audit', \App\Models\Asset::class)
@@ -239,18 +252,21 @@
                                 @endcan
 
                                 <div class="col-md-12 hidden-print" style="padding-top: 5px;">
-                                    {{ Form::open([
-                                                     'method' => 'POST',
-                                                     'route' => ['hardware/bulkedit'],
-                                                     'class' => 'form-inline',
-                                                      'target'=>'_blank',
-                                                      'id' => 'bulkForm']) }}
+                                    <form
+                                        method="POST"
+                                        action="{{ route('hardware/bulkedit') }}"
+                                        accept-charset="UTF-8"
+                                        class="form-inline"
+                                        target="_blank"
+                                        id="bulkForm"
+                                    >
+                                    @csrf
                                     <input type="hidden" name="bulk_actions" value="labels" />
                                     <input type="hidden" name="ids[{{$asset->id}}]" value="{{ $asset->id }}" />
                                     <button class="btn btn-block btn-social btn-sm btn-default" id="bulkEdit"{{ (!$asset->model ? ' disabled' : '') }}{!! (!$asset->model ? ' data-tooltip="true" title="'.trans('admin/hardware/general.model_invalid').'"' : '') !!}>
                                         <x-icon type="assets" />
                                         {{ trans_choice('button.generate_labels', 1) }}</button>
-                                        {{ Form::close() }}
+                                    </form>
                                 </div>
 
                                 @can('delete', $asset)
@@ -417,7 +433,7 @@
                                                     {{ $asset->assetstatus->name }}
                                                     <label class="label label-default">{{ trans('general.deployed') }}</label>
 
-                                                
+
                                                     <x-icon type="long-arrow-right" />
                                                     <x-icon type="{{ $asset->assignedType() }}" class="fa-fw" />
                                                     {!!  $asset->assignedTo->present()->nameUrl() !!}
@@ -1099,7 +1115,7 @@
                                             {{ ($asset->userRequests) ? (int) $asset->userRequests->count() : '0' }}
                                         </div>
                                     </div>
-                                    
+
                                 </div> <!--/end striped container-->
                             </div> <!-- end col-md-9 -->
                         </div><!-- end info-stack-container -->
@@ -1217,11 +1233,14 @@
                                 @if ($asset->assignedAssets->count() > 0)
 
 
-                                    {{ Form::open([
-                                              'method' => 'POST',
-                                              'route' => ['hardware/bulkedit'],
-                                              'class' => 'form-inline',
-                                               'id' => 'bulkForm']) }}
+                                    <form
+                                        method="POST"
+                                        action="{{ route('hardware/bulkedit') }}"
+                                        accept-charset="UTF-8"
+                                        class="form-inline"
+                                        id="bulkForm"
+                                    >
+                                    @csrf
                                     <div id="toolbar">
                                         <label for="bulk_actions"><span class="sr-only">{{ trans('general.bulk_actions')}}</span></label>
                                         <select name="bulk_actions" class="form-control select2" style="width: 150px;" aria-label="bulk_actions">
@@ -1259,7 +1278,7 @@
                                         </table>
 
 
-                                        {{ Form::close() }}
+                                        </form>
                                     </div>
 
                                 @else
@@ -1394,7 +1413,6 @@
         @include ('modals.upload-file', ['item_type' => 'asset', 'item_id' => $asset->id])
     @endcan
 @stop
-
             @section('moar_scripts')
                 <script>
 

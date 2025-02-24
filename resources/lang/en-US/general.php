@@ -92,6 +92,7 @@ return [
     'customize_report'      => 'Customize Report',
     'custom_report'         => 'Custom Asset Report',
     'dashboard'				=> 'Dashboard',
+    'data_source'           => 'Data Source',
     'days'      			=> 'days',
     'days_to_next_audit'    => 'Days to Next Audit',
     'date'					=> 'Date',
@@ -127,6 +128,7 @@ return [
     'firstname_lastname_underscore_format' => 'First Name Last Name (jane_smith@example.com)',
     'lastnamefirstinitial_format' =>  'Last Name First Initial (smithj@example.com)',
     'firstintial_dot_lastname_format' => 'First Initial Last Name (j.smith@example.com)',
+    'lastname_dot_firstinitial_format' => 'Last Name First Initial (smith.j@example.com)',
     'firstname_lastname_display'	=> 'First Name Last Name (Jane Smith)',
     'lastname_firstname_display'	=> 'Last Name First Name (Smith Jane)',
     'name_display_format'	=> 'Name Display Format',
@@ -216,6 +218,14 @@ return [
     'no_results'			=> 'No Results.',
     'no'  					=> 'No',
     'notes'  				=> 'Notes',
+    'note_added'            => 'Note Added',
+    'options'				=> 'Options',
+    'preview'				=> 'Preview',
+    'add_note'              => 'Add Note',
+    'note_edited'            => 'Note Edited',
+    'edit_note'              => 'Edit Note',
+    'note_deleted'            => 'Note Deleted',
+    'delete_note'              => 'Delete Note',
     'order_number'          => 'Order Number',
     'only_deleted'          => 'Only Deleted Assets',
     'page_menu'				=> 'Showing _MENU_ items',
@@ -302,6 +312,7 @@ return [
     'username_format'		=> 'Username Format',
     'username'              => 'Username',
     'update'                => 'Update',
+    'updating_item' => 'Updating :item',
     'upload_filetypes_help'      => 'Allowed filetypes are png, gif, jpg, jpeg, doc, docx, pdf, xls, xlsx, txt, lic, xml, zip, rtf and rar. Max upload size allowed is :size.',
     'uploaded'              => 'Uploaded',
     'user'					=> 'User',
@@ -554,6 +565,7 @@ return [
         'consumables'  => ':count Consumable|:count Consumables',
         'components'  => ':count Component|:count Components',
     ],
+
     'more_info' => 'More Info',
     'quickscan_bulk_help' => 'Checking this box will edit the asset record to reflect this new location. Leaving it unchecked will simply note the location in the audit log. Note that if this asset is checked out, it will not change the location of the person, asset or location it is checked out to.',
     'whoops' => 'Whoops!',
@@ -565,5 +577,14 @@ return [
     'label' => 'Label',
     'import_asset_tag_exists' => 'An asset with the asset tag :asset_tag already exists and an update was not requested. No change was made.',
     'countries_manually_entered_help' => 'Values with an asterisk (*) were manually entered and do not match existing ISO 3166 dropdown values',
+    'accessories_assigned' => 'Assigned Accessories',
+    'user_managed_passwords' => 'Password Management',
+    'user_managed_passwords_disallow' => 'Disallow users from managing their own passwords',
+    'user_managed_passwords_allow' => 'Allow users to manage their own passwords',
+
+// Add form placeholders here
+    'placeholders' => [
+        'notes'  => 'Add a note',
+    ],
 
 ];

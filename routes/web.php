@@ -16,6 +16,7 @@ use App\Http\Controllers\ManufacturersController;
 use App\Http\Controllers\ModalController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\ReportTemplatesController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StatuslabelsController;
 use App\Http\Controllers\SuppliersController;
@@ -200,9 +201,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'authorize:superuser
     Route::get('asset_tags', [SettingsController::class, 'getAssetTags'])->name('settings.asset_tags.index');
     Route::post('asset_tags', [SettingsController::class, 'postAssetTags'])->name('settings.asset_tags.save');
 
-    Route::get('barcodes', [SettingsController::class, 'getBarcodes'])->name('settings.barcodes.index');
-    Route::post('barcodes', [SettingsController::class, 'postBarcodes'])->name('settings.barcodes.save');
-
     Route::get('labels', [SettingsController::class, 'getLabels'])->name('settings.labels.index');
     Route::post('labels', [SettingsController::class, 'postLabels'])->name('settings.labels.save');
 
@@ -282,12 +280,12 @@ Route::group(['prefix' => 'account', 'middleware' => ['auth']], function () {
 
     // Profile
     Route::get('profile', [ProfileController::class, 'getIndex'])->name('profile');
-    Route::post('profile', [ProfileController::class, 'postIndex']);
+    Route::post('profile', [ProfileController::class, 'postIndex'])->name('profile.update');
 
     Route::get('menu', [ProfileController::class, 'getMenuState'])->name('account.menuprefs');
 
     Route::get('password', [ProfileController::class, 'password'])->name('account.password.index');
-    Route::post('password', [ProfileController::class, 'passwordSave']);
+    Route::post('password', [ProfileController::class, 'passwordSave'])->name('account.password.update');
 
     Route::get('api', [ProfileController::class, 'api'])->name('user.api');
 
@@ -379,12 +377,20 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('reports/custom', [ReportsController::class, 'getCustomReport'])->name('reports/custom');
     Route::post('reports/custom', [ReportsController::class, 'postCustom']);
 
+    Route::prefix('reports/templates')->name('report-templates')->group(function () {
+        Route::post('/', [ReportTemplatesController::class, 'store'])->name('.store');
+        Route::get('/{reportTemplate}', [ReportTemplatesController::class, 'show'])->name('.show');
+        Route::get('/{reportTemplate}/edit', [ReportTemplatesController::class, 'edit'])->name('.edit');
+        Route::post('/{reportTemplate}', [ReportTemplatesController::class, 'update'])->name('.update');
+        Route::delete('/{reportTemplate}', [ReportTemplatesController::class, 'destroy'])->name('.destroy');
+    });
+
     Route::get(
         'reports/activity',
         [ReportsController::class, 'getActivityReport']
     )->name('reports.activity');
 
-    Route::post('reports/activity', [ReportsController::class, 'postActivityReport']);
+    Route::post('reports/activity', [ReportsController::class, 'postActivityReport'])->name('reports.activity.post');
 
     Route::get(
         'reports/unaccepted_assets/{deleted?}',
